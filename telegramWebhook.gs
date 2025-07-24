@@ -3,10 +3,7 @@
  * @file telegramWebhook.gs
  */
 
-// Константы (замените на свои значения)
-const TELEGRAM_BOT_TOKEN = '8035396706:AAHfH04Cvfxyk5ZUn0kiTmYzRM_1hN7-FLQ';
-const TELEGRAM_CHANNEL_ID = '-1002825944844';
-const TELEGRAM_GROUP_ID = '-1002813491955';
+
 
 /**
  * Обработчик POST-запросов от Telegram Webhook
