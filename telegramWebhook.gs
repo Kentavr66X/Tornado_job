@@ -47,7 +47,7 @@ function doPost(e) {
  */
 function handleCallbackQuery(callbackQuery) {
   try {
-    const data = callbackQuery.data; // "accept" или "reject"
+    const [action, row, postId] = callbackQuery.data.split('_');
     const userId = callbackQuery.from.id;
     const message = callbackQuery.message;
     
@@ -100,7 +100,6 @@ function handleCallbackQuery(callbackQuery) {
 
   } catch (error) {
     console.error("Ошибка в handleCallbackQuery:", error);
-    answerCallbackQuery(callbackQuery.id, "Произошла ошибка при обработке запроса");
   }
 }
 
