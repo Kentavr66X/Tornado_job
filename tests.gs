@@ -1,52 +1,60 @@
 function testOnChange() {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Наряды");
+    // Подготовка тестовых данных
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName("Наряды");
     
-    // Тестовые данные
-    var testRow = sheet.getLastRow() + 1;
-    sheet.getRange(testRow, 1).setValue(-1);
-    sheet.getRange(testRow, 2).setValue(new Date());
-    sheet.getRange(testRow, 3).setValue("Пост_1");
+    // Установка тестовых значений
+    sheet.getRange(3, 1).setValue(-1); // A3
+    sheet.getRange(3, 2).setValue("15.07.2025"); // B3
+    sheet.getRange(3, 3).setValue("POST_1"); // C3
     
-    // Имитация события
-    var e = {
+    // Создание mock-объекта события
+    const mockEvent = {
       source: ss,
-      range: sheet.getRange(testRow, 3),
-      value: "Пост_1"
-    };
-    
-    onChange(e);
-    Logger.log("Тест onChange выполнен успешно");
-  } catch (error) {
-    Utils.logError("testOnChange", error);
-  }
-}
-function testCallback() {
-  try {
-    var testData = {
-      postData: {
-        contents: JSON.stringify({
-          callback_query: {
-            id: "test_" + Math.random().toString(36).substring(2, 10),
-            data: "accept_test123_27.07.2025_ТестовыйПост",
-            from: { id: 363207547 }, // Ваш реальный ID
-            message: { 
-              chat: { id: -100123456 },
-              message_id: Math.floor(Math.random() * 10000)
-            }
-          }
-        })
+      range: {
+        getColumn: () => 2,
+        getRow: () => 3,
+        columnStart: 2,
+        rowStart: 3
       }
     };
     
-    doPost(testData);
-    Logger.log("Тест callback выполнен успешно");
+    // Вызов тестируемой функции
+    onChange(mockEvent);
+    
+    console.log("Тест testOnChange выполнен успешно");
   } catch (error) {
-    Utils.logError("testCallback", error);
+    logError("testOnChange", error);
+    throw error;
+  } finally {
+    // Очистка тестовых данных
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Наряды");
+    sheet.getRange(3, 1, 1, 3).clear();
+  }
+}
+
+function testCallback() {
+  try {
+    const mockCallback = {
+      data: "accept_3_POST_1",
+      from: { id: "123456789" },
+      message: {
+        text: "Новый наряд:\nДата: 15.07.2025\nПост: POST_1"
+      }
+    };
+    
+    handleCallbackQuery(mockCallback);
+    console.log("Тест testCallback выполнен успешно");
+  } catch (error) {
+    logError("testCallback", error);
+    throw error;
   }
 }
 function runAllTests() {
   testOnChange();
   testCallback();
+}
+function logError(testName, error) {
+  console.error(`[ERROR] ${testName}:`, error.message, error.stack);
 }
