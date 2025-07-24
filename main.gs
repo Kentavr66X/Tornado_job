@@ -34,3 +34,17 @@ function setWebhook() {
 // Глобальные переменные (если не вынесены в отдельный config.gs)
 const TELEGRAM_BOT_TOKEN = 'ваш_токен';
 const TELEGRAM_CHANNEL_ID = '@ваш_канал';
+// Проверка зависимостей
+function checkDependencies() {
+  try {
+    if (typeof TelegramApi === 'undefined') throw new Error("TelegramApi не определён");
+    if (typeof onChange === 'undefined') throw new Error("onChange не определён");
+    if (typeof formatDate === 'undefined') throw new Error("formatDate не определён");
+    
+    console.log("✅ Все зависимости загружены корректно");
+    return true;
+  } catch (error) {
+    console.error("❌ Ошибка зависимостей:", error);
+    return false;
+  }
+}
