@@ -1,7 +1,5 @@
 var TelegramApi = {
-  BOT_TOKEN: "1448643153:AAG3FHYa67wlx7-lmclUMVIROlA6ziA1OwE",
-  CHANNEL_ID: "-1002825944844",
-  GROUP_ID: "-1002813491955",
+ 
 
   sendNewOrderNotification: function(date, post, details) {
     var message = `⚠️ Новый наряд!\n📅 ${date}\n${details}`;
