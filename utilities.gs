@@ -1,11 +1,11 @@
 var Utils = {
   generateId: function() {
-    return Utilities.getUuid().substring(0, 8);
+    return Utils.getUuid().substring(0, 8);
   },
 
   formatDate: function(date) {
     if (!date) return "Дата не указана";
-    return Utilities.formatDate(new Date(date), "GMT+3", "dd.MM.yyyy");
+    return Utils.formatDate(new Date(date), "GMT+3", "dd.MM.yyyy");
   },
 
   validateEvent: function(e) {
