@@ -1,37 +1,27 @@
 function testOnChange() {
-  try {
-    // Подготовка тестовых данных
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName("Наряды");
-    
-    // Установка тестовых значений
-    sheet.getRange(3, 1).setValue(-1); // A3
-    sheet.getRange(3, 2).setValue("15.07.2025"); // B3
-    sheet.getRange(3, 3).setValue("POST_1"); // C3
-    
-    // Создание mock-объекта события
-    const mockEvent = {
-      source: ss,
-      range: {
-        getColumn: () => 2,
-        getRow: () => 3,
-        columnStart: 2,
-        rowStart: 3
-      }
-    };
-    
-    // Вызов тестируемой функции
-    onChange(mockEvent);
-    
-    console.log("Тест testOnChange выполнен успешно");
-  } catch (error) {
-    logError("testOnChange", error);
-    throw error;
-  } finally {
-    // Очистка тестовых данных
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Наряды");
-    sheet.getRange(3, 1, 1, 3).clear();
-  }
+  // Тестовый объект события
+  const mockEvent = {
+    source: SpreadsheetApp.getActiveSpreadsheet(),
+    range: {
+      getColumn: () => 2,
+      getRow: () => 3,
+      columnStart: 2,
+      rowStart: 3
+    }
+  };
+  
+  // Подготовка тестовых данных
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Наряды");
+  sheet.getRange(3, 1).setValue(-1); // Столбец A
+  sheet.getRange(3, 2).setValue("01.01.2025"); // Столбец B
+  sheet.getRange(3, 3).setValue("POST_1"); // Столбец C
+  
+  // Вызов функции
+  onChange(mockEvent);
+  
+  // Очистка
+  sheet.getRange(3, 1, 1, 3).clear();
 }
 
 function testCallback() {
