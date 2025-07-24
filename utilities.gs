@@ -1,52 +1,18 @@
-function testOnChange() {
-  try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Наряды");
-    
-    // Тестовые данные
-    var testRow = sheet.getLastRow() + 1;
-    sheet.getRange(testRow, 1).setValue(-1);
-    sheet.getRange(testRow, 2).setValue(new Date());
-    sheet.getRange(testRow, 3).setValue("Пост_1");
-    
-    // Имитация события
-    var e = {
-      source: ss,
-      range: sheet.getRange(testRow, 3),
-      value: "Пост_1"
-    };
-    
-    onChange(e);
-    Logger.log("Тест onChange выполнен успешно");
-  } catch (error) {
-    Utils.logError("testOnChange", error);
+var Utils = {
+  generateId: function() {
+    return Utilities.getUuid().substring(0, 8);
+  },
+
+  formatDate: function(date) {
+    if (!date) return "Дата не указана";
+    return Utilities.formatDate(new Date(date), "GMT+3", "dd.MM.yyyy");
+  },
+
+  validateEvent: function(e) {
+    return e && e.source && e.range;
+  },
+
+  logError: function(context, error) {
+    Logger.log(`[ERROR] ${context}: ${error.toString()}\n${error.stack}`);
   }
-}
-function testCallback() {
-  try {
-    var testData = {
-      postData: {
-        contents: JSON.stringify({
-          callback_query: {
-            id: "test_" + Math.random().toString(36).substring(2, 10),
-            data: "accept_test123_27.07.2025_ТестовыйПост",
-            from: { id: 363207547 }, // Ваш реальный ID
-            message: { 
-              chat: { id: -100123456 },
-              message_id: Math.floor(Math.random() * 10000)
-            }
-          }
-        })
-      }
-    };
-    
-    doPost(testData);
-    Logger.log("Тест callback выполнен успешно");
-  } catch (error) {
-    Utils.logError("testCallback", error);
-  }
-}
-function runAllTests() {
-  testOnChange();
-  testCallback();
-}
+};
